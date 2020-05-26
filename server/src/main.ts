@@ -20,6 +20,7 @@ app.use((_inRequest: Request, inResponse: Response, inNext: NextFunction) => {
   inNext();
 });
 
+// GET: retrieves all mailboxes
 app.get('/mailboxes', async (_inRequest: Request, inResponse: Response) => {
   try {
     const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
@@ -28,4 +29,17 @@ app.get('/mailboxes', async (_inRequest: Request, inResponse: Response) => {
   } catch (inError) {
     inResponse.send('error');
   }
-})
+});
+
+// GET: retrieves a particular mailbox
+app.get('/mailboxes/:mailbox', async (inRequest: Request, inResponse: Response) => {
+  try {
+    const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
+    const messages: IMAP.IMessage[] = await imapWorker.listMessages({
+      mailbox: inRequest.params.mailbox
+    });
+    inResponse.json(messages);
+  } catch (inError) {
+    inResponse.send('error');
+  }
+});
