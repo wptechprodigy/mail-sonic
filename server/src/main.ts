@@ -88,3 +88,15 @@ app.delete(
 		}
 	},
 );
+
+// POST: send a message
+app.post('/messages', async (inRequest: Request, inResponse: Response) => {
+  try {
+    const smtpWorker: SMTP.Worker = new SMTP.Worker(serverInfo);
+    await smtpWorker.sendMessage(inRequest.body);
+
+    inResponse.send('ok!');
+  } catch (inError) {
+    inResponse.send('error');
+  }
+})
