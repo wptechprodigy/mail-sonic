@@ -12,10 +12,20 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 // Dealling with CORS issues and allowing access to the API
-app.use((inRequest: Request, inResponse: Response, inNext: NextFunction) => {
+app.use((_inRequest: Request, inResponse: Response, inNext: NextFunction) => {
   inResponse.header('Access-Control-Allow-Origin', '*');
   inResponse.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS');
   inResponse.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept');
 
   inNext();
 });
+
+app.get('/mailboxes', async (_inRequest: Request, inResponse: Response) => {
+  try {
+    const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
+    const mailboxes: IMAP.IMailBox[] = await imapWorker.listMailBoxes();
+    inResponse.json(mailboxes);
+  } catch (inError) {
+    inResponse.send('error');
+  }
+})
