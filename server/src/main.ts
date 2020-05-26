@@ -91,24 +91,36 @@ app.delete(
 
 // POST: send a message
 app.post('/messages', async (inRequest: Request, inResponse: Response) => {
-  try {
-    const smtpWorker: SMTP.Worker = new SMTP.Worker(serverInfo);
-    await smtpWorker.sendMessage(inRequest.body);
+	try {
+		const smtpWorker: SMTP.Worker = new SMTP.Worker(serverInfo);
+		await smtpWorker.sendMessage(inRequest.body);
 
-    inResponse.send('ok!');
-  } catch (inError) {
-    inResponse.send('error');
-  }
+		inResponse.send('ok!');
+	} catch (inError) {
+		inResponse.send('error');
+	}
 });
 
 // GET: retrieves all contacts
 app.get('/contacts', async (inRequest: Request, inResponse: Response) => {
-  try {
-    const contactsWorker: Contacts.Worker = new Contacts.Worker();
-    const contacts: IContact[] = await contactsWorker.listContacts();
+	try {
+		const contactsWorker: Contacts.Worker = new Contacts.Worker();
+		const contacts: IContact[] = await contactsWorker.listContacts();
 
-    inResponse.json(contacts);
-  } catch (inError) {
-    inResponse.send('error');
-  }
-})
+		inResponse.json(contacts);
+	} catch (inError) {
+		inResponse.send('error');
+	}
+});
+
+// POST: add a contact
+app.post('/contacts', async (inRequest: Request, inResponse: Response) => {
+	try {
+		const contactsWorker: Contacts.Worker = new Contacts.Worker();
+		const contact: IContact = await contactsWorker.addContact(inRequest.body);
+
+		inResponse.json(contact);
+	} catch (inError) {
+		inResponse.send('error');
+	}
+});
