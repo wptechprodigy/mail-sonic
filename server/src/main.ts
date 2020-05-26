@@ -4,7 +4,7 @@ import { serverInfo } from './ServerInfo';
 import * as IMAP from './IMAP';
 import * as SMTP from './SMTP';
 import * as Contacts from './Contacts';
-import { IContacts } from './Contacts';
+import { IContact } from './Contacts';
 
 const app: Express = express();
 
@@ -96,6 +96,18 @@ app.post('/messages', async (inRequest: Request, inResponse: Response) => {
     await smtpWorker.sendMessage(inRequest.body);
 
     inResponse.send('ok!');
+  } catch (inError) {
+    inResponse.send('error');
+  }
+});
+
+// GET: retrieves all contacts
+app.get('/contacts', async (inRequest: Request, inResponse: Response) => {
+  try {
+    const contactsWorker: Contacts.Worker = new Contacts.Worker();
+    const contacts: IContact[] = await contactsWorker.listContacts();
+
+    inResponse.json(contacts);
   } catch (inError) {
     inResponse.send('error');
   }
