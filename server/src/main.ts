@@ -124,3 +124,18 @@ app.post('/contacts', async (inRequest: Request, inResponse: Response) => {
 		inResponse.send('error');
 	}
 });
+
+// DELETE: delete a specified contact
+app.delete(
+	'/contacts/:id',
+	async (inRequest: Request, inResponse: Response) => {
+		try {
+			const contactsWorker: Contacts.Worker = new Contacts.Worker();
+			await contactsWorker.deleteContact(inRequest.params.id);
+
+			inResponse.send('ok!');
+		} catch (inError) {
+			inResponse.send('error');
+		}
+	},
+);
