@@ -40,4 +40,20 @@ export class Worker {
 			});
 		});
 	}
+
+	public deleteContact(inID: string): Promise<string> {
+		return new Promise((inResolve, inReject) => {
+			this.db.remove(
+				{ _id: inID },
+				{},
+				(inError: Error, _inNumRemoved: number) => {
+					if (inError) {
+						inReject(inError);
+					}
+
+					inResolve();
+				},
+			);
+		});
+	}
 }
