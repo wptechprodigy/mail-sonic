@@ -27,7 +27,7 @@ app.use((_inRequest: Request, inResponse: Response, inNext: NextFunction) => {
 app.get('/mailboxes', async (_inRequest: Request, inResponse: Response) => {
 	try {
 		const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
-		const mailboxes: IMAP.IMailBox[] = await imapWorker.listMailBoxes();
+		const mailboxes: IMAP.IMailbox[] = await imapWorker.listMailBoxes();
 
 		inResponse.json(mailboxes);
 	} catch (inError) {
@@ -58,7 +58,7 @@ app.get(
 	async (inRequest: Request, inResponse: Response) => {
 		try {
 			const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
-			const message: IMAP.IMessage = await imapWorker.getMessageBody({
+			const message: string | undefined = await imapWorker.getMessageBody({
 				mailbox: inRequest.params.mailbox,
 				id: parseInt(inRequest.params.id, 10),
 			});
