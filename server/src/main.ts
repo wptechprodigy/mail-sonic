@@ -119,9 +119,23 @@ app.post('/contacts', async (inRequest: Request, inResponse: Response) => {
 		const contactsWorker: Contacts.Worker = new Contacts.Worker();
 		const contact: IContact = await contactsWorker.addContact(inRequest.body);
 
-		inResponse.json(contact);
+		inResponse.status(201).json(contact);
 	} catch (inError) {
 		inResponse.send('error');
+	}
+});
+
+// Put: Update a contact
+app.put('/contacts/:id', async (inRequest: Request, inResponse: Response) => {
+	try {
+		const contactsWorker: Contacts.Worker = new Contacts.Worker();
+		const contact: IContact = await contactsWorker.updateContact(
+			inRequest.body,
+		);
+
+		inResponse.status(203).json(contact);
+	} catch (error) {
+		inResponse.status(500).json({ error });
 	}
 });
 
