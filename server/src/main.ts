@@ -102,7 +102,7 @@ app.post('/messages', async (inRequest: Request, inResponse: Response) => {
 });
 
 // GET: retrieves all contacts
-app.get('/contacts', async (inRequest: Request, inResponse: Response) => {
+app.get('/contacts', async (_inRequest: Request, inResponse: Response) => {
 	try {
 		const contactsWorker: Contacts.Worker = new Contacts.Worker();
 		const contacts: IContact[] = await contactsWorker.listContacts();
