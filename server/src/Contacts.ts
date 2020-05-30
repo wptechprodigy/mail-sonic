@@ -41,18 +41,18 @@ export class Worker {
 		});
 	}
 
-	public updateContact(inContact: IContact): Promise<IContact> {
+	public updateContact(inContact: IContact, inID: string): Promise<IContact> {
 		return new Promise((inResolve, inReject) => {
 			this.db.update(
-				{ _id: inContact._id },
-				{ name: inContact.name, email: inContact.email },
+				{ _id: inID },
+				{ $set: { name: inContact.name, email: inContact.email } },
 				{},
 				(inError: Error, _inNumReplaced: number) => {
 					if (inError) {
 						inReject(inError);
-          }
+					}
 
-          inResolve(inContact);
+					inResolve(inContact);
 				},
 			);
 		});

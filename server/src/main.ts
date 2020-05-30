@@ -7,6 +7,7 @@ import * as Contacts from './Contacts';
 import { IContact } from './Contacts';
 
 const app: Express = express();
+const PORT = 8008;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../../client/dist')));
@@ -21,6 +22,12 @@ app.use((_inRequest: Request, inResponse: Response, inNext: NextFunction) => {
 	);
 
 	inNext();
+});
+
+app.get('/', (_inRequest: Request, inResponse: Response) => {
+	inResponse.status(200).json({
+		message: 'API working!',
+	});
 });
 
 // GET: retrieves all mailboxes
@@ -131,6 +138,7 @@ app.put('/contacts/:id', async (inRequest: Request, inResponse: Response) => {
 		const contactsWorker: Contacts.Worker = new Contacts.Worker();
 		const contact: IContact = await contactsWorker.updateContact(
 			inRequest.body,
+			inRequest.params._id,
 		);
 
 		inResponse.status(203).json(contact);
@@ -153,3 +161,5 @@ app.delete(
 		}
 	},
 );
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

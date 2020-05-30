@@ -1,18 +1,18 @@
 {
 	"smtp": {
-		"host": "mail.mydomain.com",
-		"port": 999,
+		"host": "smtp.gmail.com",
+		"port": 587,
 		"auth": {
 			"user": "user@domain.com",
-			"pass": "xxxx"
+			"pass": "XXXX"
 		}
 	},
 	"imap": {
-		"host": "mail.mydomain.com",
-		"port": 999,
+		"host": "imap.gmail.com",
+		"port": 993,
 		"auth": {
 			"user": "user@domain.com",
-			"pass": "xxxx"
+			"pass": "XXXX"
 		}
 	}
 }
